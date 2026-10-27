@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# Style and warning checks for Screencopy. Exits non zero on the first problem.
+#   scripts/check          lint, then build the package with warnings as errors
+#   scripts/check format   rewrite all Swift files in place
+#   scripts/check lint     lint only
+set -euo pipefail
+
+cd "$(dirname "$0")/.."
+
+paths=(Screencopy ScreencopyKit/Sources ScreencopyKit/Tests)
+
+case "${1:-all}" in
+    format)
+        xcrun swift-format format --in-place --recursive "${paths[@]}"
+        ;;
+    lint)
+        xcrun swift-format lint --strict --recursive "${paths[@]}"
+        ;;
+    all)
+        xcrun swift-format lint --strict --recursive "${paths[@]}"
+        (cd ScreencopyKit && swift build -Xswiftc -warnings-as-errors)
+        ;;
+    *)
+        echo "usage: scripts/check [format|lint]" >&2
+        exit 2
+        ;;
+esac
