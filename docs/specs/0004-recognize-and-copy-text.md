@@ -1,7 +1,7 @@
 # 0004. Recognize the selected text and copy it to the clipboard
 
 **Date**: 2026-10-27
-**Status**: Proposed
+**Status**: Accepted
 
 ## Summary
 
@@ -34,7 +34,7 @@ Dependency: feature 3 has no spec yet. This spec assumes it delivers a `CGImage`
 - **AC-8**: Copied plays one soft system sound. No text found and failure play a different one. Sounds are always on in Release 1.
 - **AC-9**: Pressing the capture hotkey cancels a recognition still running. A cancelled result never writes the clipboard or shows a notice.
 - **AC-10**: The recognition language is detected automatically (`languages == nil`).
-- **AC-11**: The captured image and the text are never written to disk or logged. Logs hold outcome and error type only.
+- **AC-11**: The captured image is never written to disk. The text is never logged and is never written to disk by this feature; the one exception is capture history (spec [0007](0007-capture-history/index.md)), which stores the final text. Logs hold outcome and error type only.
 - **AC-12**: Content that macOS blocks from capture (such as protected video) never crashes. The outcome is "No text found" (black pixels) or "Couldn't read the selection" (capture error); both leave the clipboard untouched.
 - **AC-15**: A capture error before recognition (`captureFailed`) shows "Couldn't read the selection". `permissionDenied` shows no notice and goes to the permission flow decided in feature 3. A clipboard write that returns false is reported as "Couldn't read the selection".
 
@@ -96,7 +96,7 @@ Recognize with Vision on a background task, order and trim the result, write the
 **Data model sketch**: No stored data. Transient values only, all in memory:
 - `CaptureRegion` (exists in `ScreencopyCore`): display id, rect in points.
 - `ExtractedText` (exists): `text: String`, empty check trims whitespace.
-- `CaptureOutcome` (new, `ScreencopyCore`): `.copied(characterCount: Int)`, `.noText`, `.failed`. A separate `.reading` state drives the "Reading..." notice.
+- `CaptureOutcome` (new, `ScreencopyCore`): `.copied(characterCount: Int, shortened: Bool)` (`shortened` is false for a capture, true only when a history entry cut at 10,000 characters is picked, spec 0007), `.noText`, `.failed`, `.copyFailed` (history pick could not write the clipboard; notice "Couldn't copy", failure sound). A separate `.reading` state drives the "Reading..." notice.
 - `CaptureRegion.rect` is display local, top left origin, in points (to be confirmed in the feature 3 spec). The notice presenter finds the `NSScreen` whose `deviceDescription["NSScreenNumber"]` equals `displayID` and flips Y into Cocoa's global bottom left coordinates.
 - Update the `ExtractedText` doc comment: `text` is already trimmed, so empty means nothing was found.
 
@@ -108,7 +108,7 @@ Recognize with Vision on a background task, order and trim the result, write the
 | `TextCapturePipeline.start(image, region)` and `cancelCurrent()` (main actor; `cancelCurrent` is called on hotkey press) | `CGImage`, `CaptureRegion`; recognizer, clipboard writer, and outcome notifier injected | `CaptureOutcome` (sent to the notifier) | none | recognizer throws, or clipboard `write` returns false, mapped to `.failed` |
 | `TextRecognizer.recognize(image, languages)` (exists) | `CGImage`, `languages: [String]?` | `ExtractedText`, ordered and trimmed | none | throws `ScreencopyError.recognitionFailed` |
 | `ClipboardWriting.write(text)` (exists, becomes `@MainActor`, returns `Bool`) | `String` | success flag | none | false means failed |
-| `OutcomeNotifying.show(outcome, region)` (new protocol, AppKit implementation in the app target) | `CaptureOutcome`, `CaptureRegion` | none | none | none |
+| `OutcomeNotifying.show(outcome, region)` (new protocol, AppKit implementation in the app target) | `CaptureOutcome`, `CaptureRegion?` (nil means top center of the display under the mouse; used by history picks, spec 0007) | none | none | none |
 
 **Value sourcing**:
 | Action | Value produced / displayed | Source |
@@ -125,7 +125,7 @@ Recognize with Vision on a background task, order and trim the result, write the
 **Key invariants**:
 - The clipboard is written only when the trimmed text is non empty and the run was not cancelled.
 - A cancelled run produces no clipboard write and no notice.
-- Image and text never touch disk or logs. The image is released after recognition.
+- The image never touches disk, and nothing is logged. Text is written to disk only by capture history (spec 0007). The image is released after recognition.
 - Vision objects stay inside the recognizer. Only plain values cross actors.
 
 **Security model**: Single user, local app. The notice never shows copied text, so a screenshot of it leaks nothing. Captured content may be sensitive, so nothing is persisted here. No compliance scope.
@@ -168,7 +168,7 @@ Approach is Skateboard: the thinnest whole first, with feature 3 supplying the i
 
 **Neutral**:
 - Sounds are always on until the settings window (feature 5) offers a mute.
-- History (feature 7) will need the text from this pipeline. It must be added there without changing the no disk rule here.
+- History (feature 7, spec 0007) receives the final text through an injected `@MainActor` `HistoryRecording` protocol, called on the `copied` outcome.
 
 ## Follow-up
 

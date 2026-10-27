@@ -22,9 +22,10 @@ public struct VisionTextRecognizer: TextRecognizer {
             } catch {
                 throw ScreencopyError.recognitionFailed
             }
-            // Line ordering and line breaks are settled in the recognize spec (feature 4).
-            let lines = (request.results ?? []).compactMap { $0.topCandidates(1).first?.string }
-            return ExtractedText(text: lines.joined(separator: "\n"))
+            let fragments = (request.results ?? []).compactMap { observation in
+                observation.topCandidates(1).first.map { TextFragment(text: $0.string, box: observation.boundingBox) }
+            }
+            return ExtractedText(text: ReadingOrder.text(from: fragments))
         }.value
     }
 }
