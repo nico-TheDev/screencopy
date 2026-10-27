@@ -35,7 +35,7 @@ Capture conventions and install lint, format, and pre-commit checks from the rea
 spec [0002](../specs/0002-swift-standards-and-tooling.md)
 - [x] Decide the standard (spec): `/architect standard and tooling`
 - [ ] Capture conventions and tooling choices: `/audit`
-- [ ] Install the tooling: `/develop tooling`
+- [x] Install the tooling: `/develop tooling`
 
 ## Release 1: the smallest usable whole
 

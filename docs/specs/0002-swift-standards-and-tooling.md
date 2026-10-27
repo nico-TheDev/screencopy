@@ -1,7 +1,7 @@
 # 0002. Enforce Swift style with swift-format, a check script, and a git hook
 
 **Date**: 2026-10-28
-**Status**: Proposed
+**Status**: In Progress
 
 ## Summary
 
