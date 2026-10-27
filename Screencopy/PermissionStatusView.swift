@@ -23,7 +23,11 @@ struct PermissionStatusView: View {
                 Label("Screen recording is not allowed yet", systemImage: "exclamationmark.triangle.fill")
                     .font(.headline)
                     .foregroundStyle(.orange)
-                Text("Screencopy needs permission to see your screen. Choose Allow, then turn Screencopy on in System Settings. macOS may ask you to quit and reopen the app.")
+                Text(
+                    "Screencopy needs permission to see your screen. Choose Allow, "
+                        + "then turn Screencopy on in System Settings. "
+                        + "macOS may ask you to quit and reopen the app."
+                )
                 HStack {
                     Button("Ask for permission") { status = permission.request() }
                     Button("Open System Settings") {

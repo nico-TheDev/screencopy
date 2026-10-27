@@ -16,9 +16,10 @@ public protocol ScreenRecordingPermissionChecking: Sendable {
 
 public struct ScreenRecordingPermission: ScreenRecordingPermissionChecking {
     /// Opens the Screen Recording pane in System Settings.
-    public static let settingsURL = URL(
-        string: "x-apple.systempreferences:com.apple.preference.security?Privacy_ScreenCapture"
-    )!
+    /// Falls back to the System Settings app if the pane link ever stops parsing.
+    public static let settingsURL =
+        URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_ScreenCapture")
+        ?? URL(fileURLWithPath: "/System/Applications/System Settings.app")
 
     public init() {}
 
