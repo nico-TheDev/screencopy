@@ -11,6 +11,7 @@
 		A10000000000000000000002 /* ScreencopyCapture in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000012 /* ScreencopyCapture */; };
 		A10000000000000000000003 /* ScreencopyRecognition in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000013 /* ScreencopyRecognition */; };
 		A10000000000000000000004 /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000014 /* KeyboardShortcuts */; };
+		A10000000000000000000005 /* ScreencopyHistory in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000015 /* ScreencopyHistory */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 				A10000000000000000000001 /* ScreencopyCore in Frameworks */,
 				A10000000000000000000002 /* ScreencopyCapture in Frameworks */,
 				A10000000000000000000003 /* ScreencopyRecognition in Frameworks */,
+				A10000000000000000000005 /* ScreencopyHistory in Frameworks */,
 				A10000000000000000000004 /* KeyboardShortcuts in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -81,6 +83,7 @@
 				A10000000000000000000011 /* ScreencopyCore */,
 				A10000000000000000000012 /* ScreencopyCapture */,
 				A10000000000000000000013 /* ScreencopyRecognition */,
+				A10000000000000000000015 /* ScreencopyHistory */,
 				A10000000000000000000014 /* KeyboardShortcuts */,
 			);
 			productName = Screencopy;
@@ -110,6 +113,7 @@
 				A11000000000000000000001 /* XCLocalSwiftPackageReference "ScreencopyKit" */,
 				A11000000000000000000002 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */,
 			);
+			preferredProjectObjectVersion = 77;
 			productRefGroup = A50000000000000000000002 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -140,7 +144,7 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		AA0000000000000000000001 /* Debug (project) */ = {
+		AA0000000000000000000001 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -158,7 +162,7 @@
 			};
 			name = Debug;
 		};
-		AA0000000000000000000002 /* Release (project) */ = {
+		AA0000000000000000000002 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -173,17 +177,19 @@
 			};
 			name = Release;
 		};
-		AA0000000000000000000003 /* Debug (target) */ = {
+		AA0000000000000000000003 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 34TCBD634N;
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = Screencopy;
+				INFOPLIST_KEY_LSUIElement = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.norbertoignacio.screencopy;
@@ -193,17 +199,19 @@
 			};
 			name = Debug;
 		};
-		AA0000000000000000000004 /* Release (target) */ = {
+		AA0000000000000000000004 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 34TCBD634N;
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = Screencopy;
+				INFOPLIST_KEY_LSUIElement = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.norbertoignacio.screencopy;
@@ -274,6 +282,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = A11000000000000000000002 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */;
 			productName = KeyboardShortcuts;
+		};
+		A10000000000000000000015 /* ScreencopyHistory */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A11000000000000000000001 /* XCLocalSwiftPackageReference "ScreencopyKit" */;
+			productName = ScreencopyHistory;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

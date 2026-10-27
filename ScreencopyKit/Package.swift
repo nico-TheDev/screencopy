@@ -8,13 +8,16 @@ let package = Package(
         .library(name: "ScreencopyCore", targets: ["ScreencopyCore"]),
         .library(name: "ScreencopyCapture", targets: ["ScreencopyCapture"]),
         .library(name: "ScreencopyRecognition", targets: ["ScreencopyRecognition"]),
+        .library(name: "ScreencopyHistory", targets: ["ScreencopyHistory"]),
     ],
     targets: [
         .target(name: "ScreencopyCore"),
         .target(name: "ScreencopyCapture", dependencies: ["ScreencopyCore"]),
         .target(name: "ScreencopyRecognition", dependencies: ["ScreencopyCore"]),
+        .target(name: "ScreencopyHistory", dependencies: ["ScreencopyCore"]),
         .testTarget(name: "ScreencopyCoreTests", dependencies: ["ScreencopyCore"]),
         .testTarget(name: "ScreencopyCaptureTests", dependencies: ["ScreencopyCapture"]),
         .testTarget(name: "ScreencopyRecognitionTests", dependencies: ["ScreencopyRecognition"]),
+        .testTarget(name: "ScreencopyHistoryTests", dependencies: ["ScreencopyHistory"]),
     ]
 )
