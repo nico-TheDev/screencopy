@@ -11,7 +11,21 @@ public struct CaptureRegion: Sendable, Equatable {
     }
 }
 
-/// Text read from a capture. `text` is empty when nothing was found.
+/// A still picture of one whole display. `pointSize` is the size ScreenCaptureKit reports for it,
+/// so callers can check it against what AppKit says before trusting the picture.
+public struct DisplaySnapshot: Sendable {
+    public let displayID: CGDirectDisplayID
+    public let image: CGImage
+    public let pointSize: CGSize
+
+    public init(displayID: CGDirectDisplayID, image: CGImage, pointSize: CGSize) {
+        self.displayID = displayID
+        self.image = image
+        self.pointSize = pointSize
+    }
+}
+
+/// Text read from a capture. `text` is already trimmed, so empty means nothing was found.
 public struct ExtractedText: Sendable, Equatable {
     public let text: String
 
